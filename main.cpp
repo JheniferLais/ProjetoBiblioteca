@@ -43,7 +43,7 @@ void cadastroDeLivros(livro biblioteca[100]){
         cout << "QUANTIDADE INVALIDA!!!" << endl << "LIVRO NAO CADASTRADO";
     }
     else {
-        if(livroIndex > 99){
+        if(livroIndex < 100){
             livroIndex++;
             //
             biblioteca[livroIndex].id = id;
