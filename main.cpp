@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <locale.h>
 
 using namespace std;
 
@@ -61,6 +62,7 @@ void cadastroDeLivros(livro biblioteca[100]){
 }
 //
 int main(){
+	setlocale(LC_ALL "Portuguese");
     livro biblioteca[100]; //ARRAY QUE GUARDA AS INFORMAÇOES COM TODOS OS LIVROS(max de 100 livros)
     //
     int opcao = 1;
