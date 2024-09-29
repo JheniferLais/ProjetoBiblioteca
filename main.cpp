@@ -4,9 +4,12 @@
 
 using namespace std;
 
-//JHENIFER LAÍS BARBOSA 24014979
+/*
+- JHENIFER LA�S BARBOSA 24014979
+- JO�O PEDRO DUARTE GIATTI 24019083
+*/
 
-struct livro{
+struct Biblioteca{
     int id;
     char autor[100];
     char titulo[100];
@@ -18,7 +21,7 @@ struct livro{
 //
 int livroIndex = -1; //VARIAVEL PARA CONTROLAR O INDICE NO ARRAY BIBLIOTECA(Banco de Dados)
 //
-void cadastroDeLivros(livro biblioteca[100]){
+void cadastroDeLivros(Biblioteca livro[100]){
     //INICIALIZANDO AS VARIAVEIS
     int id;
     char autor[100];
@@ -47,12 +50,12 @@ void cadastroDeLivros(livro biblioteca[100]){
         if(livroIndex < 100){
             livroIndex++;
             //
-            biblioteca[livroIndex].id = id;
-            strcpy(biblioteca[livroIndex].autor, autor);
-            strcpy(biblioteca[livroIndex].titulo, titulo);
-            biblioteca[livroIndex].paginas = paginas;
-            biblioteca[livroIndex].ano = ano;
-            biblioteca[livroIndex].estoque = estoque;
+            livro[livroIndex].id = id;
+            strcpy(livro[livroIndex].autor, autor);
+            strcpy(livro[livroIndex].titulo, titulo);
+            livro[livroIndex].paginas = paginas;
+            livro[livroIndex].ano = ano;
+            livro[livroIndex].estoque = estoque;
         }
         else{
             cout << "FALHA NO CADASTRO";
@@ -61,9 +64,29 @@ void cadastroDeLivros(livro biblioteca[100]){
     }
 }
 //
+void consultaDeLivros(){
+	int comandoCDL = 1;
+	cout << "CONSULTA DE LIVROS" << endl;
+    cout << "------------------" << endl;
+    cout << "[1]. Listar todos os Livros" << endl;
+    cout << "[2]. Buscar livro" << endl;
+    cout << "[3]. Cancelar" << endl;
+    cin >> comandoCDL;
+    while(true){
+	    if(comandoCDL == 1){
+	    	for(int i = 0; i < livroIndex; i++){
+	    		cout << "Livro " << livroIndex << endl;
+			}
+		}else if(comandoCDL == 2){
+			
+		}else if(comandoCDL == 3){
+			break;
+		}
+	}
+}
 int main(){
-	setlocale(LC_ALL "Portuguese");
-    livro biblioteca[100]; //ARRAY QUE GUARDA AS INFORMAÇOES COM TODOS OS LIVROS(max de 100 livros)
+	setlocale(LC_ALL, "Portuguese");
+    Biblioteca livro[100]; //ARRAY QUE GUARDA AS INFORMAÇOES COM TODOS OS LIVROS(max de 100 livros)
     //
     int opcao = 1;
     //
@@ -81,10 +104,10 @@ int main(){
         cin >> opcao;
         //
         if(opcao == 1){ //CADASTRO DE LIVROS
-            cadastroDeLivros(biblioteca);
+            cadastroDeLivros(livro);
         }
         else if(opcao == 2){ //CONSULTA DE LIVROS
-            //consultaDeLivros();
+            consultaDeLivros();
         }
         else if(opcao == 3){ //EMPRÉSTIMO DE LIVROS
             //emprestimoDeLivros();
