@@ -6,7 +6,7 @@ using namespace std;
 
 //JHENIFER LAÍS BARBOSA 24014979
 
-struct livro{
+struct Biblioteca{
     int id;
     char autor[100];
     char titulo[100];
@@ -18,7 +18,7 @@ struct livro{
 //
 int livroIndex = -1; //VARIAVEL PARA CONTROLAR O INDICE NO ARRAY BIBLIOTECA(Banco de Dados)
 //
-void cadastroDeLivros(livro biblioteca[100]){
+void cadastroDeLivros(Biblioteca livro[100]){
     //INICIALIZANDO AS VARIAVEIS
     int id;
     char autor[100];
@@ -63,7 +63,7 @@ void cadastroDeLivros(livro biblioteca[100]){
 //
 int main(){
 	setlocale(LC_ALL "Portuguese");
-    livro biblioteca[100]; //ARRAY QUE GUARDA AS INFORMAÇOES COM TODOS OS LIVROS(max de 100 livros)
+    Biblioteca livro[100]; //ARRAY QUE GUARDA AS INFORMAÇOES COM TODOS OS LIVROS(max de 100 livros)
     //
     int opcao = 1;
     //
@@ -81,7 +81,7 @@ int main(){
         cin >> opcao;
         //
         if(opcao == 1){ //CADASTRO DE LIVROS
-            cadastroDeLivros(biblioteca);
+            cadastroDeLivros(livro);
         }
         else if(opcao == 2){ //CONSULTA DE LIVROS
             //consultaDeLivros();
