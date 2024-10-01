@@ -1,95 +1,135 @@
 #include <iostream>
-#include <string.h>
-#include <locale.h>
-#include <ctype.h> // para o isdigit() e isalpha()
-
+#include <string.h> // NOLINT(*-deprecated-headers)
 using namespace std;
-
-/*
-- JHENIFER LA�S BARBOSA 24014979
-- JO�O PEDRO DUARTE GIATTI 24019083
-*/
-
-struct Biblioteca{
+//
+//Jhenifer Lais Barbosa 24014979
+//João Pedro Duarte Giatti 24019083
+//Jean Yuki Kimura 24008214
+//
+//
+//
+struct Livro {
     int id;
     char autor[100];
     char titulo[100];
     int paginas;
     int ano;
     int estoque;
-    //emprestimos; NOME DAS PESSOAS QUE EMPRESTARAM O LIVRO
+    char emprestimos[10][100];
 };
+//Variáveis globais
+int livroIndex = -1; //Controla o índice no array biblioteca
+Livro biblioteca[100]; //Array que guarda as informações de todos os livros (máximo de 100 livros)
 //
-int livroIndex = -1; //VARIAVEL PARA CONTROLAR O INDICE NO ARRAY BIBLIOTECA(Banco de Dados)
+//Função para imprimir o cabeçalho do sistema
+void printSistemaBiblioteca(){
+    cout << "-----------------------------------------" << endl;
+    cout << "\tSISTEMA BIBLIOTECA   " << endl;
+    cout << "-----------------------------------------" << endl;
+}
 //
-void cadastroDeLivros(Biblioteca livro[100]){
-    //INICIALIZANDO AS VARIAVEIS
+//Função para imprimir os detalhes de um livro
+void printLivro(int i){
+    printSistemaBiblioteca();
+    cout << "\tID: " << biblioteca[i].id << endl;
+    cout << "AUTOR: " << biblioteca[i].autor << endl;
+    cout << "TITULO: " << biblioteca[i].titulo << endl;
+    cout << "\tPAGINAS: " << biblioteca[i].paginas << endl;
+    cout << "ANO: " << biblioteca[i].ano << endl;
+    cout << "ESTOQUE: " << biblioteca[i].estoque << endl;
+    cout << "-----------------------------------------" << endl;
+    cout << "\tEMPRESTIMOS: " << endl;
+    //
+    bool semEmprestimos = true;
+    for (int j = 0; j < 10; j++) {
+        if (strlen(biblioteca[i].emprestimos[j]) > 0) {
+            cout << "\t[" << j + 1 << "]: " << biblioteca[i].emprestimos[j] << endl;
+            semEmprestimos = false;
+        }
+    }
+    if (semEmprestimos) {
+        cout << "\tSem registros de emprestimos." << endl;
+    }
+    cout << endl;
+}
+//
+//Função de cadastro de livros
+void cadastroDeLivros(){
+    //Inicializando as variáveis
     int id;
     char autor[100];
     char titulo[100];
-    int paginas;
-    int ano;
-    int estoque;
-    //PEGANDO OS INPUTS DAS VARIAVEIS
-    cout << "DIGITE O CODIGO DO LIVRO: ";
+    int paginas, ano, estoque;
+    //
+    printSistemaBiblioteca();
+    cout << "\tDIGITE O CODIGO DO LIVRO: ";
     cin >> id;
-    cout << "DIGITE O NOME DO AUTOR DO LIVRO: ";
-    cin >> autor;
-    cout << "DIGITE O TITULO DO LIVRO: ";
-    cin >> titulo;
-    cout << "DIGITE A QUANTIDADE DE PAGINAS DO LIVRO: ";
-    cin >> paginas;
-    cout << "DIGITE O ANO DE PUBLICACAO DO LIVRO: ";
-    cin >> ano;
-    cout << "DIGITE A QUANTIDADE EM ESTOQUE DO LIVRO(min 1, max 10): ";
-    cin >> estoque;
-    //VERIFICA��O DE ESTOQUE
-    if (estoque > 10 || estoque < 1) {
-        cout << "QUANTIDADE INVALIDA!!!" << endl << "LIVRO NAO CADASTRADO";
+    //
+    //Verifica se o ID já existe
+    for (int i = 0; i <= livroIndex; i++) {
+        if (biblioteca[i].id == id) {
+            cout << "\tFALHA NO CADASTRO: ID já cadastrado!" << endl;
+            return;
+        }
     }
-    else {
-        if(livroIndex < 100){
-            livroIndex++;
-            //
-            livro[livroIndex].id = id;
-            strcpy(livro[livroIndex].autor, autor);
-            strcpy(livro[livroIndex].titulo, titulo);
-            livro[livroIndex].paginas = paginas;
-            livro[livroIndex].ano = ano;
-            livro[livroIndex].estoque = estoque;
+    //
+    //Pegando os inputs das variáveis
+    cout << "\tDIGITE O NOME DO AUTOR DO LIVRO: ";
+    cin.ignore();
+    cin.getline(autor, 100);
+    cout << "\tDIGITE O TITULO DO LIVRO: ";
+    cin.getline(titulo, 100);
+    cout << "\tDIGITE A QUANTIDADE DE PAGINAS DO LIVRO: ";
+    cin >> paginas;
+    cout << "\tDIGITE O ANO DE PUBLICACAO DO LIVRO: ";
+    cin >> ano;
+    cout << "\tDIGITE A QUANTIDADE EM ESTOQUE DO LIVRO (min 1, max 10): ";
+    cin >> estoque;
+    //
+    //Verificação de estoque
+    if (estoque < 1 || estoque > 10) {
+        cout << "\tFALHA NO CADASTRO: Quantidade de estoque invalida!" << endl;
+        return;
+    }
+    //
+    //Adicionando o livro à biblioteca
+    if (livroIndex < 99) { //Verificação para não exceder o limite
+        livroIndex++;
+        biblioteca[livroIndex].id = id;
+        strcpy(biblioteca[livroIndex].autor, autor);
+        strcpy(biblioteca[livroIndex].titulo, titulo);
+        biblioteca[livroIndex].paginas = paginas;
+        biblioteca[livroIndex].ano = ano;
+        biblioteca[livroIndex].estoque = estoque;
+        //Inicializando os registros de empréstimos
+        for (int i = 0; i < 10; i++) {
+            strcpy(biblioteca[livroIndex].emprestimos[i], "");
         }
-        else{
-            cout << "FALHA NO CADASTRO";
-            cout << "QUANTIDADE DE LIVROS CADASTRADOS EXCEDIDA";
-        }
+        cout << "Livro cadastrado com sucesso!" << endl;
+    } else {
+        cout << "FALHA NO CADASTRO: Limite de livros excedido!" << endl;
     }
 }
 //
-void consultaDeLivros(Biblioteca livro[100]){
-	int comandoCDL;
+//Função para realizar a consulta de livros
+void consultaDeLivros(){
+    int comandoCDL;
     bool continuar = true;
 
     while(continuar){
-        cout << "CONSULTA DE LIVROS" << endl;
-        cout << "------------------" << endl;
-        cout << "[1]. Listar todos os Livros" << endl;
-        cout << "[2]. Buscar livro" << endl;
+        printSistemaBiblioteca();
+        cout << "[1]. CONSULTAR TODOS OS LIVROS" << endl;
+        cout << "[2]. CONSULTA POR TITULO OU ID" << endl;
         cout << "[3]. Cancelar" << endl;
         cin >> comandoCDL;
 
         if(comandoCDL == 1){
             // LISTAR TODOS OS LIVROS
             if(livroIndex == -1) {
-                cout << "Nenhum livro cadastrado!" << endl;
+                cout << "FALHA NA CONSULTA: Nenhum livro cadastrado!" << endl;
             } else {
                 for(int i = 0; i <= livroIndex; i++){
-                    cout << "Livro " << i+1 << ": " << endl;
-                    cout << "ID: " << livro[i].id << endl;
-                    cout << "T�tulo: " << livro[i].titulo << endl;
-                    cout << "Autor: " << livro[i].autor << endl;
-                    cout << "N�mero de P�ginas: " << livro[i].paginas << endl;
-                    cout << "Estoque: " << livro[i].estoque << endl;
-                    cout << "------------------" << endl;
+                    printLivro(i);
                 }
             }
         } else if(comandoCDL == 2){
@@ -98,10 +138,10 @@ void consultaDeLivros(Biblioteca livro[100]){
             int i = 0;
             int isNumeric = 1;
             char buscaTituloId[100];
-            cout << "Digite o T�tulo ou o ID do livro: ";
+            cout << "DIGITE O TITULO OU ID PARA A CONSULTA: ";
             cin >> buscaTituloId;
-            
-            // VERIFICA��O DE ENTRADA N�MERICA (titulo ou id)
+
+            // VERIFICA��O DE ENTRADA N�MERICA (titulo ou id)
             while (buscaTituloId[i] != '\0') {
                 if (!isdigit(buscaTituloId[i])) {
                     isNumeric = 0;
@@ -109,45 +149,33 @@ void consultaDeLivros(Biblioteca livro[100]){
                 }
                 i++;
             }
-            
+
             if (isNumeric) {
                 // BUSCA POR ID
                 for (int k = 0; k <= livroIndex; k++) {
                     char idString[10]; // controle para armazenar o ID como string
-                    sprintf(idString, "%d", livro[k].id); // converte int para string
-                
+                    sprintf(idString, "%d", biblioteca[k].id); // converte int para string
+
                     if (strcmp(idString, buscaTituloId) == 0) {
-                        cout << "Livro Encontrado!:\n";
-                        cout << "ID: " << livro[k].id << endl;
-                        cout << "T�tulo: " << livro[k].titulo << endl;
-                        cout << "Autor: " << livro[k].autor << endl;
-                        cout << "N�mero de P�ginas: " << livro[k].paginas << endl;
-                        cout << "Estoque: " << livro[k].estoque << endl;
-                        cout << "------------------" << endl;
+                        printLivro(k);
                         encontrado = true;
                         break;
                     }
                 }
                 if (!encontrado) {
-                    cout << "Livro n�o encontrado por ID.\n";
+                    cout << "FALHA NA CONSULTA: Livro não encontrado por ID!\n";
                 }
             } else {
                 // BUSCA POR TITULO
                 for (int k = 0; k <= livroIndex; k++) {
-                    if (strcmp(livro[k].titulo, buscaTituloId) == 0) {
-                        cout << "Livro Encontrado!:\n";
-                        cout << "ID: " << livro[k].id << endl;
-                        cout << "T�tulo: " << livro[k].titulo << endl;
-                        cout << "Autor: " << livro[k].autor << endl;
-                        cout << "N�mero de P�ginas: " << livro[k].paginas << endl;
-                        cout << "Estoque: " << livro[k].estoque << endl;
-                        cout << "------------------" << endl;
+                    if (strcmp(biblioteca[k].titulo, buscaTituloId) == 0) {
+                        printLivro(k);
                         encontrado = true;
                         break;
                     }
                 }
                 if (!encontrado) {
-                    cout << "Livro n�o encontrado por t�tulo.\n";
+                    cout << "FALHA NA CONSULTA: Livro não encontrado por titulo!\n";
                 }
             }
         } else if(comandoCDL == 3){
@@ -155,45 +183,101 @@ void consultaDeLivros(Biblioteca livro[100]){
         }
     }
 }
-
-int main(){
-	setlocale(LC_ALL, "Portuguese");
-    Biblioteca livro[100]; //ARRAY QUE GUARDA AS INFORMAÇOES COM TODOS OS LIVROS(max de 100 livros)
+//
+//Função para realizar empréstimo de livros
+void emprestimoDeLivros(){
+    int cod;
+    char nome[100];
+    printSistemaBiblioteca();
+    cout << "DIGITE O CODIGO DO LIVRO PARA O EMPRESTIMO: ";
+    cin >> cod;
     //
+    for (int i = 0; i <= livroIndex; i++) {
+        if (cod == biblioteca[i].id && biblioteca[i].estoque > 0) {
+            printLivro(i);
+            cout << "DIGITE SEU NOME PARA O EMPRESTIMO: ";
+            cin.ignore();
+            cin.getline(nome, 100);
+            //
+            for (int j = 0; j < 10; j++) {
+                if (strlen(biblioteca[i].emprestimos[j]) == 0) {
+                    strcpy(biblioteca[i].emprestimos[j], nome);
+                    biblioteca[i].estoque--;
+                    cout << "Livro emprestado com sucesso!" << endl;
+                    return;
+                }
+            }
+            cout << "FALHA NO EMPRESTIMO: Sem estoque!" << endl;
+            return;
+        }
+    }
+    cout << "FALHA NO EMPRESTIMO: Livro nao encontrado ou sem estoque!" << endl;
+}
+//
+//Função para remover livros
+void remocaoDeLivros() {
+    if (livroIndex == -1) {
+        cout << "FALHA NA REMOCAO: Nao ha livros cadastrados!" << endl;
+        return;
+    }
+    //
+    int remover;
+    bool encontrado = false;
+    printSistemaBiblioteca();
+    cout << "DIGITE O CODIGO DO LIVRO PARA REMOÇÃO: ";
+    cin >> remover;
+    //
+    for (int i = 0; i <= livroIndex; i++) {
+        if (biblioteca[i].id == remover) {
+            encontrado = true;
+            for (int j = i; j < livroIndex; j++) {
+                biblioteca[j] = biblioteca[j + 1];
+            }
+            livroIndex--; //Reduz o índice dos livros cadastrados
+            cout << "Livro removido com sucesso!" << endl;
+            break;
+        }
+    }
+    //
+    if (!encontrado) {
+        cout << "FALHA NA REMOCAO: Livro nao encontrado!" << endl;
+    }
+}
+//
+//Função principal que exibe o menu do sistema
+int main(){
     int opcao = 1;
     //
     while(opcao >= 1 && opcao <= 6){
-        cout << "SISTEMA BIBLIOTECA" << endl;
-        cout << "------------------" << endl;
-        cout << "[1]. CADASTRO DE LIVROS" << endl;
-        cout << "[2]. CONSULTA DE LIVROS" << endl;
-        cout << "[3]. EMPRÉSTIMO DE LIVROS" << endl;
-        cout << "[4]. DEVOLUÇÃO DE LIVROS" << endl;
-        cout << "[5]. REMOÇÃO DE LIVROS" << endl;
-        cout << "[6]. SAIR DO SISTEMA" << endl;
+        printSistemaBiblioteca();
+        cout << "\t[1]. CADASTRO DE LIVROS" << endl;
+        cout << "\t[2]. CONSULTA DE LIVROS" << endl;
+        cout << "\t[3]. EMPRESTIMO DE LIVROS" << endl;
+        cout << "\t[4]. REMOCAO DE LIVROS" << endl;
+        cout << "\t[5]. SAIR DO SISTEMA" << endl;
+        cout << "-----------------------------------------" << endl;
         cout << "OPCAO: ";
-        //
         cin >> opcao;
         //
         if(opcao == 1){ //CADASTRO DE LIVROS
-            cadastroDeLivros(livro);
+            cadastroDeLivros();
         }
         else if(opcao == 2){ //CONSULTA DE LIVROS
-            consultaDeLivros(livro);
+            consultaDeLivros();
         }
         else if(opcao == 3){ //EMPRÉSTIMO DE LIVROS
-            //emprestimoDeLivros();
+            emprestimoDeLivros();
         }
         else if(opcao == 4){ //DEVOLUÇÃO DE LIVROS
             //devolucaoDeLivros();
         }
         else if(opcao == 5){ //REMOÇÃO DE LIVROS
-            //remocaoDeLivros();
+            remocaoDeLivros();
         }
-        else if(opcao == 6){
+        else{
             cout << "SAINDO DO SISTEMA... OBRIGADO POR UTILIZAR NOSSO SISTEMA";
+            break;
         }
     }
-
     return 0;
 }
