@@ -190,7 +190,7 @@ int main(){
         else if(opcao == 5){ //REMOÇÃO DE LIVROS
             //remocaoDeLivros();
         }
-        else{
+        else if(opcao == 6){
             cout << "SAINDO DO SISTEMA... OBRIGADO POR UTILIZAR NOSSO SISTEMA";
         }
     }
