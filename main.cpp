@@ -33,7 +33,7 @@ void printLivro(int i){
     cout << "\tID: " << biblioteca[i].id << endl;
     cout << "AUTOR: " << biblioteca[i].autor << endl;
     cout << "TITULO: " << biblioteca[i].titulo << endl;
-    cout << "\tPAGINAS: " << biblioteca[i].paginas << endl;
+    cout << "PAGINAS: " << biblioteca[i].paginas << endl;
     cout << "ANO: " << biblioteca[i].ano << endl;
     cout << "ESTOQUE: " << biblioteca[i].estoque << endl;
     cout << "-----------------------------------------" << endl;
@@ -113,14 +113,13 @@ void cadastroDeLivros(){
     cout << "Livro cadastrado com sucesso!" << endl;
 }
 
-//Função para realizar consulta de livros
+//fun��o para realizar consulta de livros
 void consultaDeLivros(){
     if (livroIndex == -1) {
         cout << "FALHA NA CONSULTA: Nao ha livros cadastrados!" << endl;
         return;
     }
 
-    //Inicializando as variáveis
     int comandoCDL;
     bool continuar = true;
 
@@ -135,6 +134,7 @@ void consultaDeLivros(){
             for(int i = 0; i <= livroIndex; i++){
                 printLivro(i);
             }
+            continuar = false;
 
         } else if(comandoCDL == 2){ //Lista o livro baseado em id ou titulo
             bool encontrado = false;
@@ -142,7 +142,8 @@ void consultaDeLivros(){
             int isNumeric = 1;
             char buscaTituloId[100];
             cout << "DIGITE O TITULO OU ID PARA A CONSULTA: ";
-            cin >> buscaTituloId;
+            cin.ignore();
+            cin.getline(buscaTituloId, 100);
 
             //Verificação de entrada numerica (titulo ou id)
             while (buscaTituloId[i] != '\0') {
