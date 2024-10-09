@@ -31,11 +31,11 @@ void printSistemaBiblioteca(){
 void printLivro(int i){
     printSistemaBiblioteca();
     cout << "\tID: " << biblioteca[i].id << endl;
-    cout << "AUTOR: " << biblioteca[i].autor << endl;
-    cout << "TITULO: " << biblioteca[i].titulo << endl;
-    cout << "PAGINAS: " << biblioteca[i].paginas << endl;
-    cout << "ANO: " << biblioteca[i].ano << endl;
-    cout << "ESTOQUE: " << biblioteca[i].estoque << endl;
+    cout << "\tAUTOR: " << biblioteca[i].autor << endl;
+    cout << "\tTITULO: " << biblioteca[i].titulo << endl;
+    cout << "\tPAGINAS: " << biblioteca[i].paginas << endl;
+    cout << "\tANO: " << biblioteca[i].ano << endl;
+    cout << "\tESTOQUE: " << biblioteca[i].estoque << endl;
     cout << "-----------------------------------------" << endl;
     cout << "\tEMPRESTIMOS: " << endl;
 
