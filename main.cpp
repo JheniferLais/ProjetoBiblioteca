@@ -292,14 +292,25 @@ void remocaoDeLivros() {
     cin >> cod;
 
     for (int i = 0; i <= livroIndex; i++) {
-        if (cod == biblioteca[i].id) {  // Procura o codigo inserido
+        if (cod == biblioteca[i].id) {  // procura o codigo inserido
             encontrado = true;
-            for (int j = i; j < livroIndex; j++) {
+            bool semEmprestimos = true;
+		    for (int j = 0; j < 10; j++) {
+		        if (strlen(biblioteca[i].emprestimos[j]) > 0) {
+		            semEmprestimos = false;
+		        }
+		    }
+		    if (semEmprestimos) {
+		        for (int j = i; j < livroIndex; j++) {
                 biblioteca[j] = biblioteca[j + 1];
-            }
-            livroIndex--; //Reduz o índice dos livros cadastrados
-            cout << "Livro removido com sucesso!" << endl;
-            break;
+	            }
+	            livroIndex--; //reduz o indice dos livros cadastrados
+	            cout << "Livro removido com sucesso!" << endl;
+	            break;
+		    }else{
+		    	cout << "ERRO: O livro esta sendo emprestado no momento." << endl;
+		    	break;
+			}
         }
     }
     //
