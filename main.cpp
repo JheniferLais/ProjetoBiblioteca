@@ -295,14 +295,14 @@ void emprestimoDeLivros(){
                     return;
                 }
             }
-            
+
             //Caso nao tenha livro em estoque
             cout << "FALHA NO EMPRESTIMO: Sem estoque!" << endl;
             return;
         }
     }
-    
-    //Caso o livro nao seja encontrado ou nao tenha estoque 
+
+    //Caso o livro nao seja encontrado ou nao tenha estoque
     cout << "FALHA NO EMPRESTIMO: Livro nao encontrado ou sem estoque!" << endl;
 }
 
@@ -323,11 +323,11 @@ void devolucaoDeLivros() {
 
     //Print do cabecalho do sistema
     printSistemaBiblioteca();
-    
+
     //Entrada do codigo do livro
     cout << "DIGITE O CODIGO DO LIVRO PARA A DEVOLUCAO: ";
     cin >> cod;
-    
+
     //Procura o livro pelo id fornecido
     for (int i = 0; i <= livroIndex; i++) {
         if (cod == biblioteca[i].id) {
@@ -363,7 +363,7 @@ void devolucaoDeLivros() {
                     break;
                 }
             }
-            
+
             //Valida caso nao tenha livros com registros de emprestimos para o nome fornecido pelo usuario
             if (!emEncontrado) {
                 cout << "FALHA NA DEVOLUCAO: Livro sem emprestimos para esse nome!" << endl;
@@ -371,7 +371,7 @@ void devolucaoDeLivros() {
             break;
         }
     }
-    
+
     //Valida caso nao tenha encontrado o livro
     if (!idEncontrado) {
         cout << "FALHA NA DEVOLUCAO: Livro nao encontrado!" << endl;
@@ -403,7 +403,7 @@ void remocaoDeLivros() {
         if (cod == biblioteca[i].id) {
             encontrado = true;
             bool semEmprestimos = true;
-            
+
             //Valida se existe emprestimos
 		    for (int j = 0; j < 10; j++) {
 		        if (strlen(biblioteca[i].emprestimos[j]) > 0) {
@@ -411,26 +411,29 @@ void remocaoDeLivros() {
 		        }
 		    }
             
+            //Caso o livro possa ser removido
 		    if (semEmprestimos) {
-                
+
                 //Logica de exclusao
 		        for (int j = i; j < livroIndex; j++) {
                 biblioteca[j] = biblioteca[j + 1];
 	            }
-                
+
                 //reduz o indice dos livros cadastrados
 	            livroIndex--;
-                
+
 	            cout << "Livro removido com sucesso!" << endl;
 	            break;
+
+            //Caso tenha pendencias de emprestimos para o livro
 		    } else {
 		    	cout << "FALHA NA REMOCAO: O livro esta com pendencias de emprestimos." << endl;
 		    	break;
 			}
         }
     }
-    
-    //Valida caso nao tenha encontrado o livro 
+
+    //Valida caso nao tenha encontrado o livro
     if (!encontrado) {
         cout << "FALHA NA REMOCAO: Livro nao encontrado!" << endl;
     }
